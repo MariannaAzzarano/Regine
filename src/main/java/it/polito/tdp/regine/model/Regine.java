@@ -20,25 +20,25 @@ public class Regine {
 	
 	private int N;
 	
-	private List<Integer> soluzione;
+	private List<List<Integer>> soluzioni;
 	
-	public List<Integer> risolvi(int N){
+	public List<List<Integer>> risolvi(int N){
 		this.N = N;
 		List<Integer> parziale = new ArrayList<Integer>();  //usiamo arraylist perchè dobbiamo usare il metodo get su di essa -> più efficente
-		
+		this.soluzioni = new ArrayList<>();
 		cerca(parziale, 0);
 		
 		
-		return this.soluzione;
+		return this.soluzioni;
 	}
 	
 	//cerca = true: trovato; cerca == false : cerca ancora
-	private boolean cerca(List<Integer>parziale, int livello) {  //[0, 6, 4, 7]
+	private void cerca(List<Integer>parziale, int livello) {  //[0, 6, 4, 7]
 		if(livello==N) {
 			// caso terminale
-			System.out.println(parziale);
-			this.soluzione = new ArrayList<>(parziale) ;
-			return true;
+			//System.out.println(parziale);
+			this.soluzioni.add(new ArrayList<>(parziale));  //copia!!
+		
 		} else {
 			for(int colonna=0; colonna<N; colonna++) {
 				// if la possa nella casella [livello][colonna] è valida
@@ -46,14 +46,13 @@ public class Regine {
 				
 				if(posValida(parziale, colonna)) {
 					parziale.add(colonna);   //attenzione che qua io aggiungo elemente alla nostra lista -> [0, 6, 4, 7, 1]
-					 boolean trovato = cerca(parziale, livello+1);
-					 if(trovato)
-						 return true;
+					 cerca(parziale, livello+1);
+					
 					parziale.remove(parziale.size()-1); //backtracking -> per togliere l'ultimo elemento che ho inserito
 					
 				}
 			}
-			return false;
+			
 		}
 	}
 
